@@ -82,11 +82,7 @@ export class AppService {
   }
 
   async getDashboard() {
-    const transactions = await this.prismaService.transaction.findMany({
-      orderBy: {
-        createdAt: 'asc',
-      },
-    });
+    const transactions = await this.getTransaction();
 
     const entries = transactions.reduce((group, item) => {
       if (item.type === transactionTypes[TransactionType.entry]) {
@@ -105,9 +101,9 @@ export class AppService {
     const total = entries - outcomes;
 
     const dashboard = {
-      [transactionTypes[TransactionType.entry]]: entries,
-      [transactionTypes[TransactionType.outcome]]: outcomes,
-      [transactionTypes[TransactionType.total]]: total,
+      [TransactionType[TransactionType.entry]]: entries,
+      [TransactionType[TransactionType.outcome]]: outcomes,
+      [TransactionType[TransactionType.total]]: total,
     };
 
     return dashboard;
